@@ -1,0 +1,19 @@
+{
+  "tfidf": {
+    "min_df": 5,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "sublinear_tf": true,
+    "stop_words": "english"
+  },
+  "family": "LR",
+  "config": {
+    "hidden": [],
+    "alpha": 0.1,
+    "lr": 0.01,
+    "max_epochs": 150
+  },
+  "epochs": 28
+}

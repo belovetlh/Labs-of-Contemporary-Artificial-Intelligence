@@ -1,0 +1,49 @@
+{
+  "tfidf": {
+    "min_df": 5,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "sublinear_tf": true,
+    "stop_words": "english"
+  },
+  "LR": {
+    "config": {
+      "hidden": [],
+      "alpha": 0.1,
+      "lr": 0.01,
+      "max_epochs": 150
+    },
+    "cv_acc": 0.7750573179612643,
+    "cv_std": 0.026881257671497582,
+    "epochs": 28
+  },
+  "MLP": {
+    "config": {
+      "hidden": [
+        25
+      ],
+      "alpha": 0.001,
+      "lr": 0.001,
+      "max_epochs": 100
+    },
+    "cv_acc": 0.779402845851096,
+    "cv_std": 0.02108608824931922,
+    "epochs": 36
+  },
+  "NB": {
+    "config": {
+      "alpha": 1.0
+    },
+    "cv_acc": 0.7841041460401103,
+    "cv_std": 0.02648845321656273
+  },
+  "SVM": {
+    "config": {
+      "C": 0.1
+    },
+    "cv_acc": 0.7873638647279748,
+    "cv_std": 0.02492037499607055
+  }
+}

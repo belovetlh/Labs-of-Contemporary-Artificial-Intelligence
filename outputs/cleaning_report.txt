@@ -1,0 +1,146 @@
+========================================================================
+实验一 数据预处理检查报告
+========================================================================
+
+[1] 清洗配置
+    header=True, keep_subject=False, quotes=True, attribution=True, uuencode=True, signature=True, email_url=True
+
+[2] 验证集划分（在设计清洗规则之前完成）
+    全部 7368 条 → 训练 5526 条 / 验证 1842 条（验证占 25.0%），两部分无重叠：True，合起来覆盖全部样本：True
+    按讨论串分组：训练 2653 个讨论串 / 验证 882 个，同时出现在两边的讨论串：0 个
+    类别            全部    训练    验证     验证占比
+    0 图形         730   547   183    25.1%
+    1 Windows    739   554   185    25.0%
+    2 PC硬件       737   553   184    25.0%
+    3 汽车         742   557   185    24.9%
+    4 摩托车        747   560   187    25.0%
+    5 棒球         745   559   186    25.0%
+    6 加密         743   557   186    25.0%
+    7 电子         738   553   185    25.1%
+    8 医学         742   557   185    24.9%
+    9 中东政治       705   529   176    25.0%
+
+[3] 各规则删除量（只用训练部分 5526 条）
+    清洗前后样本数：5526 → 5526，没有删除样本，标签未改动
+    规则                    涉及帖子      删除条目        删除字符     占原文字符
+    ① 头部          5526 (100.0%)      5526   1,041,268      9.9%
+    ① 内层头部          38 ( 0.7%)        38       2,998      0.0%
+    ② 引用行         3021 (54.7%)     35697   1,785,232     17.0%
+    ③ 引述行         2997 (54.2%)      3143     229,662      2.2%
+    ⑤ uuencode      17 ( 0.3%)     15121     921,420      8.8%
+    ④ 签名档         1919 (34.7%)      1919     418,042      4.0%
+    ⑥ 邮箱/网址       1805 (32.7%)      3717      88,391      0.8%
+    各类别中受影响的帖子数：
+                      图形 Windows    PC硬件      汽车     摩托车      棒球      加密      电子      医学    中东政治
+    ① 头部             547     554     553     557     560     559     557     553     557     529
+    ① 内层头部             2       1       2       4       3       0       6       2       3      15
+    ② 引用行            193     250     207     344     343     352     370     284     310     368
+    ③ 引述行            199     226     217     317     383     329     357     276     313     380
+    ⑤ uuencode         0      15       0       0       0       0       1       1       0       0
+    ④ 签名档            182     207     200     148     202     179     270     192     201     138
+    ⑥ 邮箱/网址          234     192     210     172     216     158     175     193     165      90
+
+[4] 文本长度变化（训练部分，字符数）
+    清洗前：总计 10,506,234，中位数 1152，均值 1901
+    清洗后：总计 5,946,234，中位数 531，均值 1076（保留 56.6%）
+
+[5] 清洗后为空的样本（训练部分；保留，不删除）
+    11 条（0.20%），行号 [548, 2349, 2782, 2822, 3587, 4171, 5263, 6093, 6677, 6995, 7361]
+    按类别：图形 2，Windows 4，棒球 1，医学 2，中东政治 2
+
+[6] 验证集、测试集的格式一致性核对（不看标签，不用于任何决策）
+    验证集 1842 条：清洗后为空 8 条；各规则涉及的帖子比例：① 头部 100.0%，① 内层头部 0.7%，② 引用行 52.7%，③ 引述行 53.1%，⑤ uuencode 0.2%，④ 签名档 35.8%，⑥ 邮箱/网址 33.4%
+    测试集 2457 条：清洗后为空 4 条；各规则涉及的帖子比例：① 头部 100.0%，① 内层头部 0.7%，② 引用行 54.7%，③ 引述行 54.4%，⑤ uuencode 0.1%，④ 签名档 34.8%，⑥ 邮箱/网址 33.6%
+    （对照）训练部分：① 头部 100.0%，① 内层头部 0.7%，② 引用行 54.7%，③ 引述行 54.2%，⑤ uuencode 0.3%，④ 签名档 34.7%，⑥ 邮箱/网址 32.7%
+
+[7] 被删内容抽样（训练部分）：每条规则在每个类别随机抽 1 条，用于人工核对是否误删
+
+  --- ① 头部 ---
+    [图形] row 1683: 'From: dsnyder@falcon.aamrl.wpafb.af.mil ⏎ Subject: Re: Real Time Graphics?? ⏎ Distribution: na ⏎ Organization:…'
+    [Windows] row  563: 'From: gay@selkirk.sfu.ca (Ian D. Gay) ⏎ Subject: Re: Can I Change "Licensed To" Data in Windows 3.1? ⏎ Organiz…'
+    [PC硬件] row 3604: 'From: alerman@netcom.com (Alexander Lerman) ⏎ Subject: 486-33 Tower Without a Fan??? ⏎ Organization: NETCOM On…'
+    [汽车] row 3252: 'From: rhorwell@crab.network-a (Roland Faragher-Horwell,crab) ⏎ Subject: Re: Dumbest automotive concepts of all…'
+    [摩托车] row 3060: 'From: car377@cbnewsj.cb.att.com (charles.a.rogers) ⏎ Subject: Re: Fortune-guzzler barred from bars! ⏎ Organiza…'
+    [棒球] row 1788: 'From: gotribe@cbnewse.cb.att.com (richard.g.barry) ⏎ Subject: Re: Reds Without Sleeves (was Re: New Uniforms) …'
+    [加密] row 1490: 'From: smk5@quads.uchicago.edu (Steve Kramarsky) ⏎ Subject: Re: Fifth Amendment and Passwords ⏎ Reply-To: smk5@…'
+    [电子] row 1121: 'From: shanlps@ducvax.auburn.edu ⏎ Subject: TV RECEPTION:  HEELLLPPP!!! ⏎ Lines: 18 ⏎ Nntp-Posting-Host: ducvax…'
+    [医学] row 5664: 'From: dougb@comm.mot.com (Doug Bank) ⏎ Subject: Re: Is MSG sensitivity superstition? ⏎ Reply-To: dougb@ecs.com…'
+    [中东政治] row  559: 'From: sera@zuma.UUCP (Serdar Argic) ⏎ Subject: Re: Pre-Columbian American population levels  ⏎ Organization: z…'
+
+  --- ① 内层头部 ---
+    [图形] row 2746: 'Organization: "A World of Information at your Fingertips" ⏎ Keywords:'
+    [Windows] row 4865: 'Newsgroups: comp.os.ms-windows.misc ⏎ Subject: Hiragana/Katakana TT fonts ⏎ Keywords: hiragana, katakana, True…'
+    [PC硬件] row 1293: 'Organization: Compact Solutions, Canberra ACT Australia'
+    [汽车] row 4170: 'From: thwang@mentor.cc.purdue.edu (Tommy Hwang) ⏎ Subject: Advise needed in buying Automobile'
+    [摩托车] row 5990: 'From: speedy@engr.latech.edu (Speedy Mercer)'
+    [加密] row 2984: 'From: andersom@spot.Colorado.EDU (Marc Anderson)'
+    [电子] row 2262: 'From: payne@crl.dec.com (Andrew Payne) ⏎ Message-ID: <1993Apr20.004418.11548@crl.dec.com> ⏎ Organization: DEC …'
+    [医学] row 4892: 'Subject: Re: Eugenics'
+    [中东政治] row 3273: 'From: Center for Policy Research <cpr> ⏎ Subject: Rabin and his Palestinians kapos'
+
+  --- ② 引用行 ---
+    [图形] row 6194: '>>available late this year.   A number of other manufacturers are reported to '
+    [Windows] row 6383: '>Q4:  If you buy the upgrade to Windows 3.1 for W4WG does it replace'
+    [PC硬件] row 5611: '>in modes like 800x600x64k colors noninterlaced, or at higher modes like'
+    [汽车] row 2663: '>'
+    [摩托车] row 4275: '>That difference is only in the minds of certain closed-minded individuals.  I'
+    [棒球] row 4094: ">BTW, correlating players' _overall_ batting average from '84-'87 with"
+    [加密] row  184: '>   agression.  This is the difference between self-defence and murder."'
+    [电子] row 1612: '>two weeks equates to 1,209,600 seconds per firing, which means one big timing'
+    [医学] row 5793: '>>causes different symptoms except for the common one of rapid heartbeat'
+    [中东政治] row 4372: '>>         First of all: it is called ISTANBUL. '
+
+  --- ③ 引述行 ---
+    [图形] row 3307: 'peterbak@microsoft.com (Peter Bako) writes:'
+    [Windows] row 2458: 'In <1993Apr22.235454.18199@seas.gwu.edu> louray@seas.gwu.edu (Michael Panayiotakis) writes:'
+    [PC硬件] row 1410: 'On Thu, 22 Apr 93 20:02:00 GMT John Ngai (ngai@nova.bellcore.com) wrote:'
+    [汽车] row 2324: 'Tobias) wrote:'
+    [摩托车] row 7228: 'In article <C4wKBp.B9w@eskimo.com>, maven@eskimo.com (Norman Hamer) writes:'
+    [棒球] row 3629: '(Dale Stephenson) writes:'
+    [加密] row 1205: '(The Jester) writes: '
+    [电子] row 1346: 'In article <72020037@otter.hpl.hp.com> tgg@otter.hpl.hp.com (Tom Gardner) writes:'
+    [医学] row 4657: 'In article <1993Apr22.143929.26131@midway.uchicago.edu> jacquier@gsbux1.uchicago.edu (Eric Jacquier ) writes:'
+    [中东政治] row  960: 'In article <horenC5LDuz.5sE@netcom.com>, horen@netcom.com (Jonathan B. Horen) writes:'
+
+  --- ⑤ uuencode ---
+    [Windows] row 3416: "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'"
+    [加密] row 6265: 'M!\\ /O))\\R)7B&))0N;[].XDBG)$6S+Z)=<+LA94!O)*@"\\*Z99.CF\\(E?+JH'
+    [电子] row  751: '``'
+
+  --- ④ 签名档 ---
+    [图形] row 2988: '-- ⏎  ⏎  HONK HONK BLAT WAK WAK WAK WAK WAK UNGOW!'
+    [Windows] row 7365: '--  ⏎ Daniel Matthew Coleman\t\t   |   Internet: dcoleman@utxvms.cc.utexas.edu ⏎ -------------------------------…'
+    [PC硬件] row  312: '--  ⏎ ------------------------------------------------------------------------- ⏎ Mark Ashley                 …'
+    [汽车] row 5755: '-- ⏎                                     Terry Quinn ⏎                                      Germantown Hills, …'
+    [摩托车] row 5168: '--  ⏎ Joe Senner                                                joe@rider.cactus.org ⏎ BMW Mailing List       …'
+    [棒球] row  990: '-- ⏎ msilverm@nyx.cs.du.edu\t\t\t\tGO CUBS!!! ⏎  ⏎ "One likes to believe in the freedom of baseball" - Geddy Lee'
+    [加密] row 5183: '--  ⏎ David Sternlight         Great care has been taken to ensure the accuracy of ⏎                          …'
+    [电子] row  827: '--  ⏎ Paul Johnson (paj@gec-mrc.co.uk).\t    | Tel: +44 245 73331 ext 3245 ⏎ ----------------------------------…'
+    [医学] row 5164: '--  ⏎ :-  Michael A. Covington, Associate Research Scientist        :    ***** ⏎ :-  Artificial Intelligence P…'
+    [中东政治] row 4308: '--  ⏎ Alan H. Stein                     astein@israel.nysernet.org'
+
+  --- ⑥ 邮箱/网址 ---
+    [图形] row 6523: 'TRICKLE@TWNMOE10'
+    [Windows] row 4610: 'bca@ece.cmu.edu'
+    [PC硬件] row 4775: 'gelldav@elof.acc.iit.edu'
+    [汽车] row 1195: '<C5LoBL.DDw@mentor.cc.purdue.edu>'
+    [摩托车] row  585: 'Ed.Green@East.Sun.COM'
+    [棒球] row 5669: 'jbrown@u.washington.edu'
+    [加密] row 3373: 'rja14@cl.cam.ac.uk.'
+    [电子] row 4048: 'INTERNET:ascott@tartarus.uwa.edu.au'
+    [医学] row 2308: 'blix@milton.cs.uiuc.edu'
+    [中东政治] row 4153: 'hla@urartu.sdpa.org'
+
+[8] 清洗前后对照（训练部分）：随机 3 条
+
+  --- row 1136，类别 5 棒球 ---
+    清洗前："From: dtate+@pitt.edu (David M. Tate) ⏎ Subject: Re: How to speed up games (marginally realistic) ⏎ Organization: Department of Industrial Engineering ⏎ Lines: 25 ⏎  ⏎ ez027993@chip.ucdavis.edu (Gary Built Like Villanova Huckabay) said: ⏎  ⏎ >Baseball games take about 2:51 in the NL, and just a shade under 3 hours ⏎ >in the AL.  That's just too damn long.  I don't like to PLAY in 3 hour ⏎ >games, …"
+    清洗后："  (Gary Built Like Villanova Huckabay) said: ⏎  ⏎  ⏎ But, Gary, for certain sofa tubers like myself, this is an advantage.  I ⏎ can watch the Pirates on KBL, the Mets on WWOR, the Braves on TBS, and the ⏎ mediots on ESPN at the same time, without missing anything.  (If something ⏎ impressive happens, I'll catch the replay :-) ). ⏎  ⏎ So, I see (essentially) 4 games in 3 hours, instead of 1 game in…"
+
+  --- row 4189，类别 1 Windows ---
+    清洗前：'From: btbg1194@uxa.cso.uiuc.edu (Bradley T Banko) ⏎ Subject: Save my hard disk?!  (allocation error, cross-linked) ⏎ Reply-To: b-banko@uiuc.edu ⏎ Organization: University of Illinois at Urbana ⏎ Lines: 150 ⏎  ⏎ Hi. ⏎  ⏎ While running the MS Quick C compiler in a DOS window under Windows 3.1  ⏎ this evening, I got a "program has violated system integrity... close all  ⏎ applications, exit windows a…'
+    清洗后：'Hi. ⏎  ⏎ While running the MS Quick C compiler in a DOS window under Windows 3.1  ⏎ this evening, I got a "program has violated system integrity... close all  ⏎ applications, exit windows and restart your computer" error. ⏎  ⏎ I started to do this when I immediately got a "Serious disk error" message ⏎ from Windows.  "hit return to retry".  I did that about 5 times and then ⏎ rebooted to find that…'
+
+  --- row 3086，类别 5 棒球 ---
+    清洗前："From: marc@yogi.austin.ibm.com (Marc J. Stephenson) ⏎ Subject: Re: ASTROS FOR REAL? ⏎ Organization: IBM, Austin ⏎ Lines: 29 ⏎  ⏎ In article <1993Apr15.234838.4138@ccsvax.sfasu.edu> z_millerwl@ccsvax.sfasu.edu writes: ⏎ >WHO THINKS THE ASTROS ARE GOING PLACES??? ⏎ >THEY'RE CURRENTLY FIRST PLACE. ⏎ >THEY'RE 5-4, 5-1 ON THE ROAD!  ⏎  ⏎ I AGREE, LUMBERJACK (except that they're in 2nd)!  They ARE going…"
+    清洗后：" ⏎ I AGREE, LUMBERJACK (except that they're in 2nd)!  They ARE going PLACES - ⏎ San Diego, Los Angeles, San Francisco, Cincinnati, Denver, Atlanta, Miami, ⏎ Philadelphia, New York, Montreal, Pittsburgh, Chicago, St. Louis...and ⏎ points in between.  :-) ⏎  ⏎ But, ⏎ THEY'RE 0-3 AT HOME! ⏎  ⏎ I'm just not used to an overly enthusiastic Houston fan.  I really shouldn't ⏎ discourage it, so HANG IN THE…"
