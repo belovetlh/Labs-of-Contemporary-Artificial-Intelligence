@@ -1,0 +1,4 @@
+# 仅对照实验（experiments/）需要；解题代码与单元测试只用 Python 标准库。
+# 以下为测试时使用的版本（Python 3.13.2）。
+matplotlib==3.10.1
+numpy==2.2.3
