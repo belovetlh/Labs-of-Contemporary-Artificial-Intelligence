@@ -30,7 +30,7 @@ python main.py all
 python -m unittest
 ```
 
-**3. 重新生成全部实验结果**（四个脚本合计约 2~3 分钟）
+**3. 重新生成全部实验结果**（四个脚本合计约 2~4 分钟）
 
 ```bash
 pip install -r requirements.txt
