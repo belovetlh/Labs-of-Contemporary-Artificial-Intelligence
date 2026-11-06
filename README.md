@@ -6,6 +6,54 @@
 
 当代人工智能实验课 · 实验二。用 **A\*** 和 **Minimax / Alpha-Beta 剪枝**求解迷宫寻路、加权地形、博弈树和宝藏争夺四道题，并用对照实验解释启发函数、搜索深度与访问顺序如何影响搜索开销。
 
+## 复现步骤
+
+环境：Python 3.13.2（Windows 11 上测试）。第 1、2 步只依赖标准库，第 3 步需要画图库。
+
+**1. 获取代码并运行四道题**
+
+```bash
+git clone -b lab2 https://github.com/belovetlh/Labs-of-Contemporary-Artificial-Intelligence.git
+```
+
+```bash
+cd Labs-of-Contemporary-Artificial-Intelligence
+```
+
+```bash
+python main.py all
+```
+
+**2. 运行单元测试**（46 个，包含题目样例、边界情况和算法的理论性质）
+
+```bash
+python -m unittest
+```
+
+**3. 重新生成全部实验结果**（四个脚本合计约 2~3 分钟）
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python -m experiments.exp_p1
+```
+
+```bash
+python -m experiments.exp_p2
+```
+
+```bash
+python -m experiments.exp_p3
+```
+
+```bash
+python -m experiments.exp_p4
+```
+
+结果写入 `results/p1` 到 `results/p4`，每个目录下的 `summary.md` 汇总了全部表格和图，同目录还有 CSV 原始数据。所有随机地图和博弈树都由固定种子生成，除耗时外的结果可以逐字复现。只想确认脚本能否跑通时加 `--quick`，它会缩小规模并写入 `results/quick/`，不影响正式结果。
+
 ## 结论
 
 | 题目 | 输出（均与预期一致） | 对照实验的主要发现 |
@@ -14,22 +62,6 @@
 | 二、加权地形 | `7` | 普通曼哈顿距离不可采纳（样例 20/25 格高估），却在 6000 次求解中从未出错；高代价格子增多时 A\* 的优势呈渗流式骤降 |
 | 三、Alpha-Beta | `5`（剪掉叶子 9） | 理想顺序的叶子数在 14 组参数上与 Knuth-Moore 公式完全一致；好顺序的关键是"剪得早"，而不是"剪得多" |
 | 四、宝藏争夺 | H=2：`T2, -1`；H=4：`T3, 3` | H=4 先抢 B 身边的 T3：A 少赚 6，B 少赚 8；改进状态设计后，10 个宝藏的搜索约为 Minimax 的 1/1878 |
-
-## 快速开始
-
-解题代码和单元测试只依赖 Python 标准库，克隆后可以直接运行（测试环境：Python 3.13.2，Windows 11）：
-
-```bash
-git clone -b lab2 https://github.com/belovetlh/Labs-of-Contemporary-Artificial-Intelligence.git
-cd Labs-of-Contemporary-Artificial-Intelligence
-python main.py all
-```
-
-运行单元测试（46 个，包含题目样例、边界情况和算法的理论性质）：
-
-```bash
-python -m unittest
-```
 
 ## 用法
 
@@ -96,33 +128,7 @@ alpha_beta(TreeNode(children=[TreeNode(value=3), TreeNode(value=5)]))  # 5
 
 <img src="results/p4/e4_horizon.png" alt="搜索深度与对局损失" width="560">
 
-## 复现实验
-
-实验脚本需要画图库：
-
-```bash
-pip install -r requirements.txt
-```
-
-四个脚本合计约 2~3 分钟。所有随机地图和博弈树都由固定种子生成，除耗时外的结果可以逐字复现：
-
-```bash
-python -m experiments.exp_p1
-```
-
-```bash
-python -m experiments.exp_p2
-```
-
-```bash
-python -m experiments.exp_p3
-```
-
-```bash
-python -m experiments.exp_p4
-```
-
-结果写入 `results/p1` 到 `results/p4`，每个目录下的 `summary.md` 汇总了全部表格和图，同目录还有 CSV 原始数据。只想确认脚本能否跑通时加 `--quick`，它会缩小规模并写入 `results/quick/`，不影响正式结果。
+## 实验内容
 
 | 脚本 | 实验内容 |
 |---|---|
