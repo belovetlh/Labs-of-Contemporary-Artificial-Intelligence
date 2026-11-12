@@ -1,0 +1,7 @@
+# 本地开发与验证所用的版本（Python 3.13）。
+# 代码只依赖稳定 API，要求 torch >= 2.3；在 Kaggle 上直接使用其预装的 PyTorch 即可。
+# 每次实验实际使用的版本会记录在 outputs/<name>/results.json 的 env 字段中。
+torch==2.10.0
+torchvision==0.25.0
+numpy==2.2.3
+matplotlib==3.10.1

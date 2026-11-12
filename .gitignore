@@ -1,0 +1,26 @@
+# Python 缓存
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# 数据集由代码自动下载，不入库
+data/
+
+# 模型权重与预测缓存体积大，不入库（日志、指标和图表保留，作为实验记录）
+outputs/**/*.pt
+outputs/**/*.npz
+
+# 本地快速检查产生的临时输出
+outputs_smoke/
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+
+# 课程要求文件与报告（报告单独提交）
+当代人工智能作业三.pdf
+report/
